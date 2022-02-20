@@ -37,26 +37,27 @@ class Land extends Component {
         }
     }
 
-
+    // 게임 시작시 세팅
     f_init_game_setting = () => {
 
         this.setState((props) => {
             return {
-            curGameLevel: props.curGameLevel,
-            totalMineCount: this.state.mineCountCategory[props.curGameLevel],
-            landSize: this.state.landSizeCategory[props.curGameLevel],
-            lineLength: this.state.lineLengthCategory[props.curGameLevel],
-            horizontalLength: this.state.horizontalLengthCategory[props.curGameLevel],
-            verticalLength: this.state.verticalLengthCategory[props.curGameLevel],
-            cellsId: [...Array(this.state.landSizeCategory[props.curGameLevel]).keys()],
+            curGameLevel: props.curGameLevel, //게임 레벨 선택시 레벨 세팅
+            totalMineCount: this.state.mineCountCategory[props.curGameLevel], //게임 레벨 세팅시 지뢰 개수 세팅
+            landSize: this.state.landSizeCategory[props.curGameLevel], //게임 레벨 세팅시 land 크기 설정
+            lineLength: this.state.lineLengthCategory[props.curGameLevel], //게임 레벨 세팅시 land 길이 설정
+
+            horizontalLength: this.state.horizontalLengthCategory[props.curGameLevel], // 게일 레벨에 따라 가로 사이즈 설정
+            verticalLength: this.state.verticalLengthCategory[props.curGameLevel], // 게임 레벨에 따라 세로 사이즈 설정
+            cellsId: [...Array(this.state.landSizeCategory[props.curGameLevel]).keys()], //게임 레벨에 따라 배열길이 설정 그리고 키 값 설정
             
             };
         })
     }
 
-    f_drawLand = () => {
+    f_drawLand = () => { //land 그리기
 
-        var land = document.getElementsByClassName('land')[0];
+        var land = document.getElementsByClassName('land')[0]; //land 클래스가 갖고 있는 모든 값들을 가져온다.[0]으로 첫번째만
         const defaultCellSize  = this.state.defaultCellSize;
         const horizontalLength = this.state.horizontalLengthCategory[this.state.curGameLevel]; //가로
         const verticalLength   = this.state.verticalLengthCategory[this.state.curGameLevel]; //세로
@@ -86,20 +87,43 @@ class Land extends Component {
 
     // Todo: Auto landSize set by game level // Done
     // Todo: Generate entire cell array
+    // f_gernerate_mine = (e) => {
+    //     if(this.state.isGenerateMine)
+    //     return 0; 
 
+    //     const landSize = this.state.landSize;
+    //     const totalMineCount = this.state.totalMineCount;
+    //     const cells = new Array(landSize);
+
+    //     let leftMineCount = totalMineCount;
+    //     let leftCells = landSize;
+    //     console.log('Generate : '+landSize);
+    //     console.log('Generate : '+landSize);
+    //     var random = 0;
+    //     var standNum = 0;
+    //     var maxSize = 10; // state
+    //     var count = 0;
+    // }
+     
+
+    //지뢰생성
     f_generateMine = (e) => {
-
-        if(this.state.isGenerateMine)
+        console.log('버튼눌림');
+        if(this.state.isGenerateMine) //초기에 isGenerateMine = fales
             return;
+        // this.props.onClick(); //클릭 이벤트 발생
+        const landSize = this.state.landSize; //크기값 저장
+        const totalMineCount = this.state.totalMineCount; // 총 지뢰갯수
+        const horizontalLength = this.state.horizontalLength; //가로 길이
+        const cells = new Array(landSize); //전체 셀 갯수를 배열로 저장
+        var leftMineCount = totalMineCount; //총 지뢰 갯수를 전달
+        var leftCells = landSize; //총 셀을 전달
         
-        const landSize = this.state.landSize;
-        const totalMineCount = this.state.totalMineCount;
-
-        const cells = new Array(landSize);
-        var leftMineCount = totalMineCount;
-        var leftCells = landSize;
+        console.log('leftMineCount : '+leftMineCount);
+        console.log('leftCells : '+leftCells);
         console.log('Generate : '+landSize);
-        const test = ['asd', 'zxc', 'qwe']
+
+        //const test = ['asd', 'zxc', 'qwe']
         // Probability
         // Todo: Complete array gen
         var random = 0;
@@ -107,7 +131,7 @@ class Land extends Component {
         var maxSize = 10; // state
         var count = 0;
 
-        for (var i = 0; i < landSize; i++) {
+        for (var i = 0; i < landSize; i++) { //총 셀 수만큼 반복
 
             standNum = leftMineCount/leftCells;
             random = Math.random(99);
@@ -136,10 +160,10 @@ class Land extends Component {
         console.log(cells);
 
 
-        this.setState({
-            cellTypeArray: cells,
-            isGenerateMine: true,
-        })
+        // this.setState({
+        //     cellTypeArray: cells,
+        //     isGenerateMine: true,
+        // })
     }
 
 
@@ -190,9 +214,9 @@ class Land extends Component {
                             // console.log('index : '+(landSize - lineLength));
                             return (
                                 // <div key={index} className='wcell_jh' id={index} onClick={this.f_generateMine}>
-                                    <div className='wcell_jh' id={index}>
+                                    <div className='wcell_jh' id={index}  onClick={this.f_generateMine}>
                                     {/* <Cell id={value} func={this.checkGameOver} onClick={this.f_generateMine} cellType={this.state.cellTypeArray[index]}/> */}
-                                    <Cell id={value}/>
+                                    <Cell cellId={index} id={value}/>
                                 </div>
                             )
                         }

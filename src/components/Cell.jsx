@@ -13,6 +13,7 @@ class Cell extends Component {
         super(props);
 
         this.state = {
+            cellId: this.props.cellid,
             cell: this.props.cell,
             curImg: this.__img[0],
             mineNumber: 10,
@@ -153,7 +154,7 @@ class Cell extends Component {
         // console.log(this.props.level);
         return (
             <>
-                <div className='cell_jh'/>
+                <div id={this.state.cellId} className='cell_jh'/>
                 {/* <button className='Cell' /> */}
                 {/* <button className='Cell'/> */}
                 {/* <div className='Cell'> </div> */}
